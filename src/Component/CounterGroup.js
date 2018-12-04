@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import Counter from './Counter.js'
+import { connect } from "react-redux";
 
 class CounterGroup extends Component {
   constructor(prop) {
     super(prop)
     this.state = {
-      // counter: new Array(prop.size).fill(0),
-      counter: [0, 5],
-      sum: 0,
+      counter: new Array(prop.size).fill(0),
+      // sum: 0,
     }
   }
   updateSum=(delta) => {
-    this.state.sum += delta;
-    this.setState(this.state)
+    // this.state.sum += delta;
+    // this.setState(this.state)
+    this.props.dispatch({
+      type: "UPDATESUM",
+      payload: delta
+    });
   }
 
   onSubmitFunc = (event) => {
@@ -36,10 +40,16 @@ class CounterGroup extends Component {
             <input ref="inputField"/>
             <button type="submit"> Counter </button>
         </form>
-        <span>sum: {this.state.sum}</span>
+        <span>sum: {this.props.sum}</span>
       </div>
     );
   }
 }
 
-export default CounterGroup;
+// export default CounterGroup;
+const mapStateToProps = state => ({
+  sum: state.sum
+});
+
+ connect(mapStateToProps)(CounterGroup)
+ export default connect(mapStateToProps)(CounterGroup);
